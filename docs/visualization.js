@@ -367,35 +367,35 @@ const visualizationMain = () => {
                         });
                     });
                 }
-                if (zoomLevel === zoomLevels.CITY) {
-                    const boroughTextData = boroughData.features.reduce((accumulator, feature) => {
-                        const borough = feature.properties.boro_name;
-                        const {centerX, centerY} = centroidByBorough[borough];
-                        accumulator[borough] = {
-                            centerX: centerX,
-                            centerY: centerY,
-                            collisionCount: 0,
-                        };
-                        return accumulator;
-                    }, {});
-                    crashDateData.forEach(hourData => {
-                        Object.entries(hourData).forEach(boroughToBoroughDataPair => {
-                            const [borough, boroughDataForHour] = boroughToBoroughDataPair;
-                            Object.values(boroughDataForHour).forEach(crashes => {
-                                boroughTextData[capitalizeString(borough)].collisionCount += crashes.length;
-                            });
+                const boroughTextData = boroughData.features.reduce((accumulator, feature) => {
+                    const borough = feature.properties.boro_name;
+                    const {centerX, centerY} = centroidByBorough[borough];
+                    accumulator[borough] = {
+                        centerX: centerX,
+                        centerY: centerY,
+                        collisionCount: 0,
+                    };
+                    return accumulator;
+                }, {});
+                crashDateData.forEach(hourData => {
+                    Object.entries(hourData).forEach(boroughToBoroughDataPair => {
+                        const [borough, boroughDataForHour] = boroughToBoroughDataPair;
+                        Object.values(boroughDataForHour).forEach(crashes => {
+                            boroughTextData[capitalizeString(borough)].collisionCount += crashes.length;
                         });
                     });
-                    const visualizationTextDisplayDynamicTextElement = document.getElementById('visualization-text-display-dynamic-text');
-                    visualizationTextDisplayDynamicTextElement.innerHTML = '';
-                    Object.entries(boroughTextData).map(boroughToDataPair => {
-                        const [borough, {collisionCount}] = boroughToDataPair;
-                        return `${borough} Collisions: ${collisionCount}`;
-                    }).sort().forEach(string => {
-                        const paragraphElement = document.createElement('p');
-                        paragraphElement.innerHTML = string;
-                        visualizationTextDisplayDynamicTextElement.append(paragraphElement);
-                    });
+                });
+                const visualizationTextDisplayDynamicTextElement = document.getElementById('visualization-text-display-dynamic-text');
+                visualizationTextDisplayDynamicTextElement.innerHTML = '';
+                Object.entries(boroughTextData).map(boroughToDataPair => {
+                    const [borough, {collisionCount}] = boroughToDataPair;
+                    return `${borough} Collisions: ${collisionCount}`;
+                }).sort().forEach(string => {
+                    const paragraphElement = document.createElement('p');
+                    paragraphElement.innerHTML = string;
+                    visualizationTextDisplayDynamicTextElement.append(paragraphElement);
+                });
+                if (zoomLevel === zoomLevels.CITY) {
                     crashesGroup
                         .selectAll('text')
                         .data(Object.entries(boroughTextData))
