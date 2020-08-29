@@ -97,6 +97,7 @@ table {
     border-radius: 3px;
     background: #3e5063;
     text-align: center;
+    user-select: none;
 }
 
 #visualization-text-display * {

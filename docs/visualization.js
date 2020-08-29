@@ -141,6 +141,7 @@ const visualizationMain = () => {
 	}, {});
         let updateVisualizationWithDateData;
         updateDate = () => {
+            document.getElementById('visualization-text-display-dynamic-text').innerHTML = 'Loading...';
             const dateString = dateDropdown.value;
             if (crashDateDataByDateString[dateString] !== null) {
                 updateVisualizationWithDateData();
